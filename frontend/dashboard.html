@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Gestão de Estoque</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Sidebar injected by sidebar.js -->
+
+    <div class="main-content" role="main">
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button id="sidebar-toggle-btn" class="sidebar-toggle" aria-label="Abrir menu">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="page-title">Dashboard</h1>
+                    <p class="page-subtitle">Visão geral do estoque</p>
+                </div>
+            </div>
+            <span id="topbar-date" class="topbar-date"></span>
+        </header>
+
+        <!-- Page content -->
+        <div class="page-body">
+
+            <!-- Faixa de KPIs -->
+            <div class="kpi-strip rise">
+
+                <div class="kpi">
+                    <span class="kpi-label">Total de produtos</span>
+                    <div class="metric-skeleton skeleton" style="height:2.375rem;width:4rem;"></div>
+                    <div class="metric-value kpi-value" id="metric-produtos" style="display:none;">—</div>
+                    <a href="/produtos.html" class="kpi-link">ver todos &rarr;</a>
+                </div>
+
+                <div class="kpi">
+                    <span class="kpi-label">Categorias</span>
+                    <div class="metric-skeleton skeleton" style="height:2.375rem;width:3rem;"></div>
+                    <div class="metric-value kpi-value" id="metric-categorias" style="display:none;">—</div>
+                    <a href="/categorias.html" class="kpi-link">gerenciar &rarr;</a>
+                </div>
+
+                <div class="kpi">
+                    <span class="kpi-label">Valor em estoque</span>
+                    <div class="metric-skeleton skeleton" style="height:2.375rem;width:7rem;"></div>
+                    <div class="metric-value kpi-value is-currency t-mono" id="metric-valor" style="display:none;">—</div>
+                    <span class="kpi-link" style="border:none;color:var(--ink-3);">custo &times; quantidade</span>
+                </div>
+
+                <div class="kpi">
+                    <span class="kpi-label">Produtos no limite</span>
+                    <div class="metric-skeleton skeleton" style="height:2.375rem;width:3rem;"></div>
+                    <div class="metric-value kpi-value is-alert" id="metric-limite" style="display:none;">—</div>
+                    <a href="/produtos.html" class="kpi-link">ver produtos &rarr;</a>
+                </div>
+
+            </div>
+
+            <!-- Linha inferior -->
+            <div class="dashboard-bottom-grid" style="display:grid;grid-template-columns:3fr 2fr;gap:1.25rem;align-items:start;">
+
+                <!-- Movimentações Recentes -->
+                <div class="table-container rise rise-1">
+                    <div class="card-header">
+                        <h2 class="section-title">Movimentações recentes</h2>
+                        <a href="/movimentacoes.html" class="card-link">ver todas &rarr;</a>
+                    </div>
+                    <table class="data-table" aria-label="Movimentações recentes">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Tipo</th>
+                                <th>Qtd</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody id="movimentacoes-tbody">
+                            <tr><td colspan="4"><div class="skeleton" style="height:1rem;margin:0.5rem 0;"></div></td></tr>
+                            <tr><td colspan="4"><div class="skeleton" style="height:1rem;margin:0.5rem 0;"></div></td></tr>
+                            <tr><td colspan="4"><div class="skeleton" style="height:1rem;margin:0.5rem 0;"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Estoque baixo -->
+                <div class="table-container rise rise-2">
+                    <div class="card-header">
+                        <h2 class="section-title">
+                            <span style="width:8px;height:8px;background:var(--accent);border-radius:50%;display:inline-block;"></span>
+                            Estoque baixo
+                        </h2>
+                    </div>
+                    <div id="produtos-limite-list">
+                        <div class="skeleton" style="height:3rem;margin:0.75rem 1.25rem;"></div>
+                        <div class="skeleton" style="height:3rem;margin:0.75rem 1.25rem;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mais movimentados -->
+            <div class="table-container rise rise-3" style="margin-top:1.25rem;">
+                <div class="card-header">
+                    <h2 class="section-title">Produtos mais movimentados</h2>
+                </div>
+                <div style="padding:1.375rem;">
+                    <div class="bar-chart" id="bar-chart">
+                        <div class="skeleton" style="height:0.875rem;margin-bottom:0.625rem;"></div>
+                        <div class="skeleton" style="height:0.875rem;margin-bottom:0.625rem;width:80%;"></div>
+                        <div class="skeleton" style="height:0.875rem;margin-bottom:0.625rem;width:65%;"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>window.ACTIVE_NAV = 'dashboard';</script>
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/sidebar.js"></script>
+    <script src="/js/dashboard.js"></script>
+    <script>
+        document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('pt-BR', {
+            weekday: 'long', day: 'numeric', month: 'long'
+        });
+    </script>
+</body>
+</html>

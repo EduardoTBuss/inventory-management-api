@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movimentações — Gestão de Estoque</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <div class="main-content" role="main">
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button id="sidebar-toggle-btn" class="sidebar-toggle" aria-label="Abrir menu">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="page-title">Movimentações</h1>
+                    <p class="page-subtitle">Entradas, saídas e ajustes</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="page-body mov-grid" style="display:grid;grid-template-columns:340px 1fr;gap:1.5rem;align-items:start;">
+
+            <!-- ESQUERDA: formulário de registro -->
+            <div class="rise">
+                <div class="table-container" style="position:sticky;top:88px;">
+                    <div class="card-header" style="background:var(--surface-2);">
+                        <h2 class="section-title" style="font-size:0.9688rem;">
+                            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            Registrar movimentação
+                        </h2>
+                    </div>
+
+                    <form id="form-movimentacao" novalidate style="padding:1.25rem;">
+
+                        <!-- Indicador de tipo -->
+                        <div id="tipo-indicator" style="display:none;align-items:center;gap:0.5rem;padding:0.625rem 0.875rem;border-radius:var(--radius-sm);border:1px solid;margin-bottom:1rem;font-family:var(--font-mono);font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+                            <span></span>
+                        </div>
+
+                        <div style="margin-bottom:1rem;">
+                            <label for="field-produto" class="form-label">Produto <span class="req" aria-hidden="true">*</span></label>
+                            <select id="field-produto" class="form-input" required aria-label="Selecionar produto">
+                                <option value="">Selecione um produto</option>
+                            </select>
+                        </div>
+
+                        <div style="margin-bottom:1rem;">
+                            <label for="field-tipo" class="form-label">Tipo <span class="req" aria-hidden="true">*</span></label>
+                            <select id="field-tipo" class="form-input" required aria-label="Tipo de movimentação">
+                                <option value="">Selecione o tipo</option>
+                                <option value="entrada">Entrada</option>
+                                <option value="saida">Saída</option>
+                                <option value="ajuste">Ajuste</option>
+                            </select>
+                        </div>
+
+                        <div style="margin-bottom:1rem;">
+                            <label for="field-quantidade" class="form-label">Quantidade <span class="req" aria-hidden="true">*</span></label>
+                            <input
+                                type="number"
+                                id="field-quantidade"
+                                class="form-input"
+                                placeholder="0"
+                                min="1"
+                                step="1"
+                                required
+                                aria-label="Quantidade"
+                            >
+                            <p class="form-hint">Deve ser um número positivo.</p>
+                        </div>
+
+                        <div style="margin-bottom:1.25rem;">
+                            <label for="field-motivo" class="form-label">Motivo <span class="opt">(opcional)</span></label>
+                            <textarea
+                                id="field-motivo"
+                                class="form-input"
+                                placeholder="Descreva o motivo da movimentação..."
+                                rows="3"
+                                style="resize:vertical;line-height:1.5;"
+                                aria-label="Motivo da movimentação"
+                            ></textarea>
+                        </div>
+
+                        <button type="submit" id="btn-registrar" class="btn btn-success" style="width:100%;padding:0.6875rem;">
+                            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Registrar movimentação
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Legenda -->
+                <div class="table-container" style="padding:1.125rem;margin-top:1.25rem;">
+                    <p class="t-label" style="margin:0 0 0.875rem;">Legenda</p>
+                    <div style="display:flex;flex-direction:column;gap:0.5625rem;">
+                        <div style="display:flex;align-items:center;gap:0.5625rem;font-size:0.8125rem;">
+                            <span class="badge badge-green">Entrada</span>
+                            <span style="color:var(--ink-2);">Aumenta o estoque</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:0.5625rem;font-size:0.8125rem;">
+                            <span class="badge badge-red">Saída</span>
+                            <span style="color:var(--ink-2);">Diminui o estoque</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:0.5625rem;font-size:0.8125rem;">
+                            <span class="badge badge-yellow">Ajuste</span>
+                            <span style="color:var(--ink-2);">Correção de inventário</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIREITA: histórico -->
+            <div class="rise rise-1">
+                <!-- Filtros -->
+                <div style="display:flex;gap:0.75rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap;">
+                    <select id="filter-produto" class="form-input" style="min-width:200px;flex:1;" aria-label="Filtrar por produto">
+                        <option value="">Todos os produtos</option>
+                    </select>
+                    <select id="filter-tipo" class="form-input" style="width:160px;" aria-label="Filtrar por tipo">
+                        <option value="">Todos os tipos</option>
+                        <option value="entrada">Entrada</option>
+                        <option value="saida">Saída</option>
+                        <option value="ajuste">Ajuste</option>
+                    </select>
+                    <button id="btn-clear-filters" class="btn btn-secondary" aria-label="Limpar filtros">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                        Limpar
+                    </button>
+                    <span id="table-info" class="t-label" style="margin-left:auto;"></span>
+                </div>
+
+                <!-- Tabela -->
+                <div class="table-container">
+                    <table class="data-table" aria-label="Histórico de movimentações">
+                        <thead>
+                            <tr>
+                                <th>Data / Hora</th>
+                                <th>Produto</th>
+                                <th>Tipo</th>
+                                <th>Quantidade</th>
+                                <th>Motivo</th>
+                                <th>Usuário</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mov-tbody">
+                            <!-- Loaded by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Paginação -->
+                <div style="display:flex;justify-content:center;margin-top:1.25rem;">
+                    <div class="pagination" id="pagination" role="navigation" aria-label="Paginação"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>window.ACTIVE_NAV = 'movimentacoes';</script>
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/sidebar.js"></script>
+    <script src="/js/movimentacoes.js"></script>
+</body>
+</html>

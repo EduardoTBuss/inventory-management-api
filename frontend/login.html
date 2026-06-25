@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar — Gestão de Estoque</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: minmax(0, 11fr) minmax(0, 9fr);
+        }
+        .panel-ink {
+            background: var(--ink-panel);
+            color: var(--cream);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 3rem 3.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .panel-ink .brand {
+            font-family: var(--font-mono);
+            font-size: 0.6875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: var(--cream-dim);
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+        }
+        .panel-ink .brand::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            display: inline-block;
+        }
+        .panel-ink .headline {
+            font-family: var(--font-display);
+            font-weight: 500;
+            font-size: clamp(2.5rem, 4.5vw, 4rem);
+            line-height: 1.05;
+            letter-spacing: -0.01em;
+            margin: 0;
+        }
+        .panel-ink .headline em { font-style: italic; color: var(--accent); }
+        .panel-ink .lede {
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            color: var(--cream-dim);
+            max-width: 38ch;
+            margin: 1.5rem 0 0;
+        }
+        .barcode { display: flex; flex-direction: column; gap: 0.5rem; width: fit-content; }
+        .barcode-bars {
+            height: 44px; width: 220px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--cream) 0 2px,   transparent 2px 5px,
+                var(--cream) 5px 6px, transparent 6px 11px,
+                var(--cream) 11px 15px, transparent 15px 18px,
+                var(--cream) 18px 19px, transparent 19px 26px
+            );
+            opacity: 0.85;
+        }
+        .barcode-text {
+            font-family: var(--font-mono);
+            font-size: 0.625rem;
+            letter-spacing: 0.34em;
+            color: var(--cream-dim);
+            text-transform: uppercase;
+        }
+        .panel-ink::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: repeating-linear-gradient(
+                0deg, transparent 0 47px, rgba(236, 230, 212, 0.05) 47px 48px
+            );
+            pointer-events: none;
+        }
+        .panel-paper { display: flex; align-items: center; justify-content: center; padding: 2.5rem 2rem; }
+        .login-box { width: 100%; max-width: 370px; }
+        .login-box h1 {
+            font-family: var(--font-display);
+            font-size: 2rem; font-weight: 600;
+            margin: 0 0 0.375rem; color: var(--ink);
+        }
+        .login-box .subtitle {
+            font-family: var(--font-mono);
+            font-size: 0.6875rem; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 0.16em;
+            color: var(--ink-3); margin: 0 0 2rem;
+        }
+        .field { margin-bottom: 1.125rem; }
+        .demo-hint {
+            margin-top: 1.75rem;
+            padding: 0.875rem 1rem;
+            border: 1px dashed var(--line-2);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.6875rem; line-height: 1.7;
+            color: var(--ink-3); letter-spacing: 0.03em;
+        }
+        .demo-hint strong { color: var(--ink-2); font-weight: 600; }
+        #login-error { margin-bottom: 1.25rem; }
+        @media (max-width: 860px) {
+            body { grid-template-columns: 1fr; }
+            .panel-ink { padding: 2rem 1.5rem; gap: 2rem; min-height: unset; }
+            .panel-ink .lede, .barcode { display: none; }
+            .panel-ink .headline { font-size: 1.75rem; margin-top: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+    <section class="panel-ink" aria-hidden="true">
+        <div class="brand">Gestão de Estoque</div>
+        <div>
+            <h2 class="headline">Cada item<br>contado.<br>Cada saída <em>registrada.</em></h2>
+            <p class="lede">
+                Controle de inventário multi-sistema — cada loja com seu próprio
+                estoque, equipe e trilha de auditoria.
+            </p>
+        </div>
+        <div class="barcode">
+            <div class="barcode-bars"></div>
+            <div class="barcode-text">EST&middot;2026&middot;V2&middot;MULTI</div>
+        </div>
+    </section>
+
+    <main class="panel-paper">
+        <div class="login-box rise">
+            <h1>Entrar</h1>
+            <p class="subtitle">Acesso restrito &middot; sistema interno</p>
+
+            <div id="login-error" class="alert alert-red" style="display:none" role="alert" aria-live="assertive">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path stroke-linecap="round" d="M12 8v4m0 4h.01"/>
+                </svg>
+                <span id="login-error-msg"></span>
+            </div>
+
+            <form id="login-form" novalidate>
+                <div class="field">
+                    <label for="codigo" class="form-label">Código do sistema</label>
+                    <input
+                        type="text" id="codigo" name="codigo" class="form-input"
+                        placeholder="ex.: principal" autocomplete="off" autocapitalize="none" spellcheck="false">
+                    <p class="form-hint">Deixe em branco se você for o <strong>super-admin</strong>.</p>
+                </div>
+
+                <div class="field">
+                    <label for="usuario" class="form-label">Usuário</label>
+                    <input
+                        type="text" id="usuario" name="usuario" class="form-input"
+                        placeholder="seu usuário" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+                </div>
+
+                <div class="field" style="margin-bottom:1.5rem;">
+                    <label for="senha" class="form-label">Senha</label>
+                    <input
+                        type="password" id="senha" name="senha" class="form-input"
+                        placeholder="••••••••" autocomplete="current-password" required>
+                </div>
+
+                <button type="submit" id="btn-login" class="btn btn-primary" style="width:100%;padding:0.75rem;font-size:0.9375rem;">
+                    Entrar no sistema
+                </button>
+            </form>
+
+            <div class="demo-hint">
+                <strong>Acesso de demonstração</strong><br>
+                Sistema: código <strong>principal</strong> &middot; usuário <strong>admin</strong> &middot; senha admin123<br>
+                Operador: código principal &middot; op &middot; op123<br>
+                Super-admin: (sem código) &middot; superadmin &middot; super123
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script>
+        // Já autenticado? Vai direto para a home do papel.
+        (function () {
+            const u = getCurrentUser();
+            if (localStorage.getItem('token') && u) {
+                window.location.replace(homeForUser(u));
+            }
+        })();
+
+        const form = document.getElementById('login-form');
+        const btnLogin = document.getElementById('btn-login');
+        const errorDiv = document.getElementById('login-error');
+        const errorMsg = document.getElementById('login-error-msg');
+
+        function showError(msg) { errorMsg.textContent = msg; errorDiv.style.display = 'flex'; }
+        function hideError() { errorDiv.style.display = 'none'; }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideError();
+
+            const codigo = document.getElementById('codigo').value.trim();
+            const usuario = document.getElementById('usuario').value.trim();
+            const senha = document.getElementById('senha').value;
+
+            if (!usuario || !senha) {
+                showError('Preencha usuário e senha.');
+                return;
+            }
+
+            setButtonLoading(btnLogin, true);
+            try {
+                const data = await login(codigo, usuario, senha);
+                window.location.replace(homeForUser(data.usuario));
+            } catch (err) {
+                showError(err.message || 'Credenciais inválidas. Tente novamente.');
+                setButtonLoading(btnLogin, false);
+            }
+        });
+
+        document.getElementById('codigo').addEventListener('keydown', e => {
+            if (e.key === 'Enter') { e.preventDefault(); document.getElementById('usuario').focus(); }
+        });
+        document.getElementById('usuario').addEventListener('keydown', e => {
+            if (e.key === 'Enter') { e.preventDefault(); document.getElementById('senha').focus(); }
+        });
+    </script>
+</body>
+</html>
