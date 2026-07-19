@@ -128,7 +128,7 @@ or rolls both back.
 ## Project layout
 
 ```
-gestao-estoque/
+inventory-management-api/
 ├── backend/
 │   ├── app/
 │   │   ├── main.py              # FastAPI app, routers, static frontend mount
@@ -152,8 +152,8 @@ gestao-estoque/
 
 ```bash
 # 1. Clone
-git clone https://github.com/EduardoTBuss/gestao-estoque.git
-cd gestao-estoque/backend
+git clone https://github.com/EduardoTBuss/inventory-management-api.git
+cd inventory-management-api/backend
 
 # 2. Create and activate a virtual environment
 python -m venv .venv
